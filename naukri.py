@@ -23,7 +23,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-import const  # make sure your constants file name is const.py
+import constants  # make sure your constants file name is const.py
 
 # ----------------------------------------------
 # Logging setup
