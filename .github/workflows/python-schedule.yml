@@ -31,4 +31,4 @@ jobs:
           NAUKRI_MODIFIED_RESUME_PATH: ${{ secrets.NAUKRI_MODIFIED_RESUME_PATH }}
           NAUKRI_LOGIN_URL: ${{ secrets.NAUKRI_LOGIN_URL }}
           NAUKRI_PROFILE_URL: ${{ secrets.NAUKRI_PROFILE_URL }}
-        run: python main.py
+        run: python naukri.py
