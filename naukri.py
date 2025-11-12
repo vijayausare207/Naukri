@@ -14,13 +14,11 @@ from string import ascii_uppercase, digits
 from pypdf import PdfReader, PdfWriter
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 import constants  # make sure your constants file name is const.py
@@ -33,19 +31,18 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # ----------------------------------------------
 # Selenium setup function (works in GitHub Actions)
 # ----------------------------------------------
-def get_driver(headless=True):
-    options = Options()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("--start-maximized")
-    if headless:
-        options.add_argument("--headless=new")
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-    logging.info("Launching Chrome in headless mode...")
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    driver.implicitly_wait(10)
+def create_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # run in headless mode
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+
+    driver = webdriver.Chrome(options=chrome_options)
     return driver
 
 # Add folder Path of your resume
@@ -215,8 +212,7 @@ def naukriLogin(headless=False):
     close_locator = "//*[contains(@class, 'cross-icon') or @alt='cross-icon']"
 
     try:
-        driver = LoadNaukri(headless)
-
+        driver = create_driver()
         log_msg(driver.title)
         if "naukri.com" in driver.title.lower():
             log_msg("Website Loaded Successfully.")
