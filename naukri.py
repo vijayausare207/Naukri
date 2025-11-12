@@ -42,7 +42,7 @@ headless = False
 # ----- No other changes required -----
 
 # Set login URL
-NaukriURL = constants.NAUKRI_NAUKRI_LOGIN_URL
+NaukriURL = constants.NAUKRI_LOGIN_URL
 
 logging.basicConfig(
     level=logging.INFO, filename="naukri.log", format="%(asctime)s    : %(message)s"
