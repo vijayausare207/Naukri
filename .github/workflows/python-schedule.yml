@@ -1,34 +1,38 @@
-name: Run Naukri Script
+name: Naukri Auto Update
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # runs daily at 6 AM UTC
-  workflow_dispatch:
+    - cron: "*/5 * * * *"   # Runs every 5 minutes
+  workflow_dispatch:        # Allow manual trigger
 
 jobs:
-  run-python:
+  run-naukri:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    env:
+      NAUKRI_USERNAME: ${{ secrets.NAUKRI_USERNAME }}
+      NAUKRI_PASSWORD: ${{ secrets.NAUKRI_PASSWORD }}
+      NAUKRI_MOBILE: ${{ secrets.NAUKRI_MOBILE }}
+      NAUKRI_ORIGINAL_RESUME_PATH: "./resume.pdf"
+      NAUKRI_MODIFIED_RESUME_PATH: "./resume_mod.pdf"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt || echo "No requirements.txt found"
+          pip install -r requirements.txt
 
-      - name: Run script with secrets
-        env:
-          NAUKRI_USERNAME: ${{ secrets.NAUKRI_USERNAME }}
-          NAUKRI_PASSWORD: ${{ secrets.NAUKRI_PASSWORD }}
-          NAUKRI_MOBILE: ${{ secrets.NAUKRI_MOBILE }}
-          NAUKRI_ORIGINAL_RESUME_PATH: ${{ secrets.NAUKRI_ORIGINAL_RESUME_PATH }}
-          NAUKRI_MODIFIED_RESUME_PATH: ${{ secrets.NAUKRI_MODIFIED_RESUME_PATH }}
-          NAUKRI_LOGIN_URL: ${{ secrets.NAUKRI_LOGIN_URL }}
-          NAUKRI_PROFILE_URL: ${{ secrets.NAUKRI_PROFILE_URL }}
-        run: python naukri.py
+      - name: Run main script
+        run: |
+          python main.py
+
+      - name: Run tests
+        run: |
+          pytest -v || true  # run tests but don't fail the workflow
