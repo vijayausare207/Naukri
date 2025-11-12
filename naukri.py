@@ -24,14 +24,14 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 import constants
 
 # Add folder Path of your resume
-originalResumePath = constants.ORIGINAL_RESUME_PATH
+originalResumePath = constants.NAUKRI_ORIGINAL_RESUME_PATH
 # Add Path where modified resume should be saved
-modifiedResumePath = constants.MODIFIED_RESUME_PATH
+modifiedResumePath = constants.NAUKRI_MODIFIED_RESUME_PATH
 
 # Update your naukri username and password here before running
-username = constants.USERNAME
-password = constants.PASSWORD
-mob = constants.MOBILE
+username = constants.NAUKRI_USERNAME
+password = constants.NAUKRI_PASSWORD
+mob = constants.NAUKRI_MOBILE
 
 # False if you dont want to add Random HIDDEN chars to your resume
 updatePDF = False
@@ -42,7 +42,7 @@ headless = False
 # ----- No other changes required -----
 
 # Set login URL
-NaukriURL = constants.NAUKRI_LOGIN_URL
+NaukriURL = constants.NAUKRI_NAUKRI_LOGIN_URL
 
 logging.basicConfig(
     level=logging.INFO, filename="naukri.log", format="%(asctime)s    : %(message)s"
