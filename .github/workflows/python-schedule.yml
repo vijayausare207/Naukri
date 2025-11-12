@@ -2,7 +2,7 @@ name: Run Naukri Resume Updater
 
 on:
   schedule:
-    - cron: "*/15 * * * *" # every 2 minutes (for testing)
+    - cron: "*/15 * * * *" # every 15 minutes (for testing)
   workflow_dispatch:
 
 jobs:
