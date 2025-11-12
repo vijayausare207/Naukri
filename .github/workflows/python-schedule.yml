@@ -1,9 +1,9 @@
-name: Naukri Auto Update
+name: Run Naukri Resume Updater
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # Runs every 5 minutes
-  workflow_dispatch:        # Allow manual trigger
+    - cron: "*/2 * * * *" # every 2 minutes (for testing)
+  workflow_dispatch:
 
 jobs:
   run-naukri:
@@ -13,23 +13,29 @@ jobs:
       NAUKRI_USERNAME: ${{ secrets.NAUKRI_USERNAME }}
       NAUKRI_PASSWORD: ${{ secrets.NAUKRI_PASSWORD }}
       NAUKRI_MOBILE: ${{ secrets.NAUKRI_MOBILE }}
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}
+      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
       NAUKRI_ORIGINAL_RESUME_PATH: "./resume.pdf"
       NAUKRI_MODIFIED_RESUME_PATH: "./resume_mod.pdf"
+      NAUKRI_LOGIN_URL: "https://www.naukri.com/nlogin/login"
+      NAUKRI_PROFILE_URL: "https://www.naukri.com/mnjuser/profile"
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install selenium webdriver-manager pypdf reportlab
+
+      - name: Create dummy resume file
+        run: |
+          echo "This is a dummy resume for automated test." > resume.pdf
 
       - name: Run Naukri script
-        run: |
-          python naukri.py
-
+        run: python naukri.py
