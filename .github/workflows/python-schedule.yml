@@ -1,0 +1,34 @@
+name: Run Naukri Script
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # runs daily at 6 AM UTC
+  workflow_dispatch:
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || echo "No requirements.txt found"
+
+      - name: Run script with secrets
+        env:
+          NAUKRI_USERNAME: ${{ secrets.NAUKRI_USERNAME }}
+          NAUKRI_PASSWORD: ${{ secrets.NAUKRI_PASSWORD }}
+          NAUKRI_MOBILE: ${{ secrets.NAUKRI_MOBILE }}
+          NAUKRI_ORIGINAL_RESUME_PATH: ${{ secrets.NAUKRI_ORIGINAL_RESUME_PATH }}
+          NAUKRI_MODIFIED_RESUME_PATH: ${{ secrets.NAUKRI_MODIFIED_RESUME_PATH }}
+          NAUKRI_LOGIN_URL: ${{ secrets.NAUKRI_LOGIN_URL }}
+          NAUKRI_PROFILE_URL: ${{ secrets.NAUKRI_PROFILE_URL }}
+        run: python main.py
