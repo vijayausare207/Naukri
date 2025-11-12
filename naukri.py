@@ -48,60 +48,6 @@ def get_driver(headless=True):
     driver.implicitly_wait(10)
     return driver
 
-# ----------------------------------------------
-# Main logic
-# ----------------------------------------------
-def update_naukri_resume():
-    try:
-        driver = get_driver(headless=True)
-        logging.info("Opening Naukri login page...")
-        driver.get(const.NAUKRI_LOGIN_URL)
-
-        # --- Login ---
-        username = const.NAUKRI_USERNAME
-        password = const.NAUKRI_PASSWORD
-
-        if not username or not password:
-            raise Exception("Missing credentials in environment variables")
-
-        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "usernameField"))).send_keys(username)
-        driver.find_element(By.ID, "passwordField").send_keys(password)
-        driver.find_element(By.XPATH, "//button[text()='Login']").click()
-
-        logging.info("Login submitted. Waiting for profile page...")
-        WebDriverWait(driver, 30).until(EC.url_contains("naukri.com/mnjuser"))
-
-        # --- Go to profile ---
-        driver.get(const.NAUKRI_PROFILE_URL)
-        time.sleep(5)
-
-        # --- Find and click the upload resume button ---
-        try:
-            upload_btn = driver.find_element(By.XPATH, "//input[@type='file']")
-            upload_btn.send_keys(os.path.abspath(const.NAUKRI_MODIFIED_RESUME_PATH))
-            logging.info("Resume upload triggered.")
-        except NoSuchElementException:
-            logging.warning("Upload button not found. Skipping resume upload.")
-
-        logging.info("Resume update completed successfully!")
-
-    except Exception as e:
-        logging.error(f"Error: {e}", exc_info=True)
-
-    finally:
-        try:
-            driver.quit()
-        except Exception:
-            pass
-
-
-if __name__ == "__main__":
-    logging.info("----- Naukri.py Script Run Begin -----")
-    update_naukri_resume()
-    logging.info("----- Naukri.py Script Run Ended -----")
-
-
-
 # Add folder Path of your resume
 originalResumePath = constants.NAUKRI_ORIGINAL_RESUME_PATH
 # Add Path where modified resume should be saved
