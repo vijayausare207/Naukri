@@ -33,6 +33,3 @@ jobs:
         run: |
           python naukri.py
 
-      - name: Run tests
-        run: |
-          pytest -v || true  # run tests but don't fail the workflow
