@@ -29,9 +29,9 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run main script
+      - name: Run Naukri script
         run: |
-          python main.py
+          python naukri.py
 
       - name: Run tests
         run: |
